@@ -13,11 +13,8 @@ var ElectronicaGame = React.createClass({
 		return(
 			<div>
 				<ul>
-					<li>{this.props.gameName}</li>
 					<li>{this.props.gameDisplayName}</li>
-					<li>{this.props.gameWinner}</li>
-					<li>{this.props.gameDate}</li>
-					<li>{this.props.gameDraw}</li>
+					<li><span dangerouslySetInnerHTML={{__html: this.props.gameWinner}} /></li>
 				</ul>
 			</div>
 		)

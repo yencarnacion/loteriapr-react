@@ -56,7 +56,6 @@ var ElectronicaDate = React.createClass({
     });
   },
   setDefaultDate: function(d){
-    debugger;
     this.setState({
       defaultDate: d
     });  
@@ -69,7 +68,6 @@ var ElectronicaDate = React.createClass({
                       (this.state.defaultDate.getMonth()+1),
                       this.state.defaultDate.getDate());
     }
-    debugger;
     
     return (
       <div>
