@@ -7,7 +7,8 @@ var sprintf = require("../utilities/sprintf").sprintf;
 var ElectronicaComponent = React.createClass({
 	propTypes: {
 		winnerdata: React.PropTypes.object.isRequired,
-		datesCb: React.PropTypes.func.isRequired
+		datesCb: React.PropTypes.func.isRequired,
+		setNewDateCb: React.PropTypes.func.isRequired
 	},	
 	getInitialState: function(){
 		return ({
@@ -43,7 +44,7 @@ var ElectronicaComponent = React.createClass({
 				
 		var gameList = [];
 		var games = '';
-		if(this.props.winnerdata.winners){
+		if(this.props.winnerdata && this.props.winnerdata.winners){
 			gameList = this.props.winnerdata.winners.games.map(function(game, index){			
 				return (
 							<ElectronicaGame key={game.gameName}
@@ -55,22 +56,20 @@ var ElectronicaComponent = React.createClass({
 							/>	 
 				)
 			});
-			
-			if(gameList.length===0){
-				games = (<div></div>);
-			} else {
-				games = gameList;
-			}	
-			window.h = this;
-			
 		}
 		
+		if(gameList.length===0){
+			games = (<div>No hubo juegos ese d&iacute;a</div>);
+		} else {
+			games = gameList;
+		}			
 		return (
 			<div>
 				<div><ElectronicaDate 	
 								defaultDate={displayDate} 
 								minDate={minDate}
 								datesCb={this.datesCb}
+								setNewDateCb={this.props.setNewDateCb}
 					/></div>
 				<div>{games}</div>
 			</div>

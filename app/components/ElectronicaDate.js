@@ -7,7 +7,8 @@ var ElectronicaDate = React.createClass({
 	propTypes: {
 		defaultDate: React.PropTypes.string.isRequired,
 		minDate: React.PropTypes.string.isRequired,
-    datesCb: React.PropTypes.func.isRequired
+    datesCb: React.PropTypes.func.isRequired,
+    setNewDateCb: React.PropTypes.func.isRequired
 	},
   getInitialState: function(){
     return {
@@ -60,6 +61,11 @@ var ElectronicaDate = React.createClass({
       defaultDate: d
     });  
   },
+  handleChange: function(e){
+    var dstr = e.target.value;
+    dstr = dstr.replace(/-/g, '/');
+    this.props.setNewDateCb(dstr);
+  },
   render: function(){
     var dd = null;
     if(this.state.defaultDate){
@@ -75,6 +81,7 @@ var ElectronicaDate = React.createClass({
           className="form-control" 
           value={dd}
 		      min={this.props.minDate} 
+          onChange={this.handleChange}
  		   />
 		  	<input type="button"  value="Dale!"></input>
       </div>

@@ -7,7 +7,7 @@ var ElectronicaGame = React.createClass({
 		gameDisplayName: React.PropTypes.string.isRequired,
 		gameWinner: React.PropTypes.string.isRequired,
 		gameDate: React.PropTypes.string.isRequired,
-		gameDraw: React.PropTypes.string.isRequired
+		gameDraw: React.PropTypes.number.isRequired
 	},
 	render: function(){
 		return(
