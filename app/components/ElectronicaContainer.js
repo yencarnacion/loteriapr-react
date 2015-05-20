@@ -1,8 +1,11 @@
 /// <reference path="../../typings/tsd.d.ts" />
 var React = require("react");
+var Router = require('react-router');
 
 var $ = require('jquery');
 var ElectronicaComponent = require('./ElectronicaComponent');
+
+var { Route, RouteHandler, Link } = Router;
    /*
    i.setState({ 
        electronicaData: 
@@ -19,7 +22,8 @@ var ElectronicaComponent = require('./ElectronicaComponent');
 	       }
 	})
   */
-var Home = React.createClass({
+ 
+var ElectronicaContainer = React.createClass({
   getInitialState: function() {
     return {
       url: 'http://www.loteria-pr.com/api/loteria/electronica/',
@@ -27,13 +31,21 @@ var Home = React.createClass({
         winners: {
           games: []
         }
-      }
+      },
+      defaultDateCb: null,
+      displayDateCb: null
       
     };
   },
   componentDidMount: function(){
     this.getElectronicaWinners();
   },
+  datesCb: function(defaultcb, displaycb){
+		this.setState({
+			defaultDateCb: defaultcb,
+			displayDateCb: displaycb
+		});
+	},
   getElectronicaWinners: function(){
     console.log("Connecting to: "+ this.state.url+"latest/.json");
     $.ajax({
@@ -43,23 +55,26 @@ var Home = React.createClass({
           console.log("Error: ", error);
         },
         success: function(data){
+          var d = new Date(data.winners.games[0].gameDate);
+          this.state.defaultDateCb(d)
           this.setState({
             electronicaData: data            
           });
-          debugger;
+
         }.bind(this)
     });
   }, 
   render: function() {  
-          window.i=this;
-          debugger;
     return (
-          <ElectronicaComponent winnerdata={this.state.electronicaData} />
+      <div>
+        <ElectronicaComponent winnerdata={this.state.electronicaData} 
+                              datesCb={this.datesCb} />
+      </div>   
     );
   }
 });
 
-module.exports = Home;
+module.exports = ElectronicaContainer;
 
 /*
  This is your root route. When you wrap it with Reapp()

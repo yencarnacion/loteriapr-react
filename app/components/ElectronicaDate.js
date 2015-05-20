@@ -1,15 +1,18 @@
 /// <reference path="../../typings/tsd.d.ts" />
 var React = require("react");
 var $ = require('jquery');
+var sprintf = require("../utilities/sprintf").sprintf;
 
 var ElectronicaDate = React.createClass({
 	propTypes: {
-		displayDate: React.PropTypes.string.isRequired,
+		defaultDate: React.PropTypes.string.isRequired,
 		minDate: React.PropTypes.string.isRequired,
+    datesCb: React.PropTypes.func.isRequired
 	},
   getInitialState: function(){
     return {
-      newDate: this.props.displayDate,
+      newDate: null,
+      defaultDate: this.props.displayDate
     }
   },
   /*formatUrl: function(){
@@ -44,12 +47,35 @@ var ElectronicaDate = React.createClass({
       }.bind(this)
     });
   },*/
+  componentDidMount: function(){
+    this.props.datesCb(this.setDefaultDate, this.setNewDate);
+  },
+  setNewDate: function(d){
+    this.setState({
+      newDate: d
+    });
+  },
+  setDefaultDate: function(d){
+    debugger;
+    this.setState({
+      defaultDate: d
+    });  
+  },
   render: function(){
+    var dd = null;
+    if(this.state.defaultDate){
+      dd = sprintf("%04d-%02d-%02d",
+                      this.state.defaultDate.getFullYear(),
+                      (this.state.defaultDate.getMonth()+1),
+                      this.state.defaultDate.getDate());
+    }
+    debugger;
+    
     return (
       <div>
         <input type="date" 
           className="form-control" 
-          value={this.state.newDate}
+          value={dd}
 		      min={this.props.minDate} 
  		   />
 		  	<input type="button"  value="Dale!"></input>
