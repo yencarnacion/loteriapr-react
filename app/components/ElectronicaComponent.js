@@ -6,9 +6,8 @@ var sprintf = require("../utilities/sprintf").sprintf;
 
 var ElectronicaComponent = React.createClass({
 	propTypes: {
-		winnerdata: React.PropTypes.object.isRequired,
+		winnerdata: React.PropTypes.object,
 		datesCb: React.PropTypes.func.isRequired,
-		setNewDateCb: React.PropTypes.func.isRequired
 	},	
 	getInitialState: function(){
 		return ({
@@ -69,7 +68,6 @@ var ElectronicaComponent = React.createClass({
 								defaultDate={displayDate} 
 								minDate={minDate}
 								datesCb={this.datesCb}
-								setNewDateCb={this.props.setNewDateCb}
 					/></div>
 				<div>{games}</div>
 			</div>

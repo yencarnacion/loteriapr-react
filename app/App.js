@@ -21,7 +21,7 @@ var App = React.createClass({
 
 var routes = (
   <Route path="/" handler={App}>
-    <Route name="electronica" handler={ElectronicaContainer} />
+    <Route name="electronica/:edateyear/:edatemonth/:edateday" handler={ElectronicaContainer} />
     <DefaultRoute handler={ElectronicaContainer} />
   </Route>
 )

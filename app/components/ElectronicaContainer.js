@@ -1,6 +1,7 @@
 /// <reference path="../../typings/tsd.d.ts" />
 var React = require("react");
 var Router = require('react-router');
+var sprintf = require("../utilities/sprintf").sprintf;
 
 var $ = require('jquery');
 var ElectronicaComponent = require('./ElectronicaComponent');
@@ -24,6 +25,9 @@ var { Route, RouteHandler, Link } = Router;
   */
  
 var ElectronicaContainer = React.createClass({
+  contextTypes: {
+    router: React.PropTypes.func
+  },
   getInitialState: function() {
     return {
       url: 'http://www.loteria-pr.com/api/loteria/electronica/',
@@ -40,19 +44,31 @@ var ElectronicaContainer = React.createClass({
   componentDidMount: function(){
     this.getElectronicaWinners();
   },
+  componentWillReceiveProps: function(newprops){
+    this.getElectronicaWinners();
+  },
   datesCb: function(defaultcb, displaycb){
 		this.setState({
 			defaultDateCb: defaultcb,
 			displayDateCb: displaycb
 		});
 	},
-  setNewDate: function(d){
-    this.getElectronicaWinners(d);  
-  },
-  getElectronicaWinners: function(d){
+  getElectronicaWinners: function(){
+    var year = this.context.router.getCurrentParams().edateyear;
+    var month = this.context.router.getCurrentParams().edatemonth;
+    var day = this.context.router.getCurrentParams().edateday;
+
+    var edate = null;
+    if(year&&month&&day){
+      edate = sprintf("%04d/%02d/%02d",
+                          year,
+                          month,
+                          day);
+    }
+
     var api = "latest/.json";
-    if(d){
-      api = d + "/.json";  
+    if(edate){
+      api = edate + "/.json";  
     }
     console.log("Connecting to: "+ this.state.url+api);
     $.ajax({
@@ -69,7 +85,7 @@ var ElectronicaContainer = React.createClass({
               electronicaData: data            
             });
           } else {
-            var dt = new Date(d);
+            var dt = new Date(edate);
             this.state.defaultDateCb(dt);
             this.setState({
               electronicaData: null            
@@ -84,8 +100,7 @@ var ElectronicaContainer = React.createClass({
     return (
       <div>
         <ElectronicaComponent winnerdata={this.state.electronicaData} 
-                              datesCb={this.datesCb} 
-                              setNewDateCb={this.setNewDate}
+                              datesCb={this.datesCb}
                               />
       </div>   
     );

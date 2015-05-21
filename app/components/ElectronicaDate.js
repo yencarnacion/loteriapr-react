@@ -4,11 +4,13 @@ var $ = require('jquery');
 var sprintf = require("../utilities/sprintf").sprintf;
 
 var ElectronicaDate = React.createClass({
+  contextTypes: {
+    router: React.PropTypes.func
+  },
 	propTypes: {
 		defaultDate: React.PropTypes.string.isRequired,
 		minDate: React.PropTypes.string.isRequired,
     datesCb: React.PropTypes.func.isRequired,
-    setNewDateCb: React.PropTypes.func.isRequired
 	},
   getInitialState: function(){
     return {
@@ -63,8 +65,10 @@ var ElectronicaDate = React.createClass({
   },
   handleChange: function(e){
     var dstr = e.target.value;
-    dstr = dstr.replace(/-/g, '/');
-    this.props.setNewDateCb(dstr);
+    if(dstr){
+      dstr = dstr.replace(/-/g, '/');
+      this.context.router.transitionTo('/electronica/'+dstr);
+    }
   },
   render: function(){
     var dd = null;
